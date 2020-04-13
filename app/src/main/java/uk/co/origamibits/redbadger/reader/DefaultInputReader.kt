@@ -10,7 +10,7 @@ class DefaultInputReader(
     private val startingPointParser: StartingPointParser
 ) : InputReader {
 
-    override fun read(inputStream: InputStream, block: (WorldGrid, StartingPoint, String) -> Unit) {
+    override fun read(inputStream: InputStream, block: (WorldGrid, StartingPoint, CharArray) -> Unit) {
         val reader = inputStream.reader().buffered()
 
         val worldLine = reader.readLine() ?: throw IllegalArgumentException("Expected grid world with format <x> <y>'")
@@ -22,7 +22,7 @@ class DefaultInputReader(
                 .filter { robotEntry -> robotEntry.size == 2 }
                 .map { startingPointParser.parse(it[0]) to it[1] }
                 .filter { (startingPoint, _) -> startingPoint != null }
-                .forEach { (start, operations) -> block(grid, start!!, operations) }
+                .forEach { (start, instructions) -> block(grid, start!!, instructions.toCharArray()) }
         }
 
     }
