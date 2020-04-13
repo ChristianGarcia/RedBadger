@@ -1,4 +1,4 @@
-package uk.co.origamibits.redbadger
+package uk.co.origamibits.redbadger.reader
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.given
@@ -9,9 +9,6 @@ import org.junit.Before
 import org.junit.Test
 import uk.co.origamibits.redbadger.model.StartingPoint
 import uk.co.origamibits.redbadger.model.WorldGrid
-import uk.co.origamibits.redbadger.reader.DefaultInputReader
-import uk.co.origamibits.redbadger.reader.InputReader
-import uk.co.origamibits.redbadger.reader.WorldGridParser
 
 class DefaultInputReaderTest {
 
