@@ -80,6 +80,18 @@ class InputReaderTest {
         assertThat(robotCount).isEqualTo(0)
     }
 
+    @Test
+    fun `given robot entry with missing orientation, when read, then ignore robot`() {
+        var robotCount = 0
+        val input = """
+    |5 3
+    |1 1
+    |RFRFRFRF""".trimMargin()
+        reader.read(input.byteInputStream()) { _, _ -> robotCount++ }
+
+        assertThat(robotCount).isEqualTo(0)
+    }
+
     companion object {
         private val NO_OP: (String, String) -> Unit = { _, _ -> }
     }
