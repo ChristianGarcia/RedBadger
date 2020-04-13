@@ -2,15 +2,10 @@ package uk.co.origamibits.redbadger.reader
 
 import uk.co.origamibits.redbadger.model.WorldGrid
 import java.io.InputStream
-import java.nio.charset.Charset
-import java.nio.charset.CharsetDecoder
 
 class DefaultInputReader : InputReader {
 
-    private val decoder: CharsetDecoder by lazy { Charset.defaultCharset().newDecoder() }
-
-
-    override fun read(inputStream: InputStream): WorldGrid {
+    override fun read(inputStream: InputStream, operation: (String) -> Unit): WorldGrid {
         val worldLine = inputStream.reader().readLines().firstOrNull() ?: throw IllegalArgumentException()
         val (x, y) = try {
             worldLine.split(" ").let { it[0].toInt() to it[1].toInt() }
