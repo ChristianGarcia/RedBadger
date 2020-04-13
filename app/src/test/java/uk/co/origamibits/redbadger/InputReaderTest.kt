@@ -28,5 +28,11 @@ class InputReaderTest {
             .isThrownBy {
                 reader.read("5".byteInputStream())
             }
+
+        assertThatExceptionOfType(IllegalArgumentException::class.java)
+            .isThrownBy {
+                reader.read("5 b".byteInputStream())
+            }
     }
+
 }

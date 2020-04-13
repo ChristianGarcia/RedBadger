@@ -10,7 +10,6 @@ class DefaultInputReader : InputReader {
 
 
     override fun read(inputStream: InputStream) {
-        inputStream.reader().readLines().firstOrNull() ?: throw IllegalArgumentException()
 
     }
 
