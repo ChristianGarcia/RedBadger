@@ -7,7 +7,6 @@ import uk.co.origamibits.redbadger.model.Orientation
 import uk.co.origamibits.redbadger.model.RobotLocation
 import uk.co.origamibits.redbadger.model.WorldGrid
 
-@ExperimentalStdlibApi
 class RobotHiveMindTest {
 
     private lateinit var hiveMind: RobotHiveMind

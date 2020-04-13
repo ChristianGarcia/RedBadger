@@ -6,7 +6,6 @@ import uk.co.origamibits.redbadger.model.WorldGrid
 
 class RobotHiveMind {
 
-    @ExperimentalStdlibApi
     fun moveRobot(grid: WorldGrid, start: RobotLocation, instructions: CharArray): RobotMoveResult? {
         if (!grid.contains(start.coords)) {
             return null
