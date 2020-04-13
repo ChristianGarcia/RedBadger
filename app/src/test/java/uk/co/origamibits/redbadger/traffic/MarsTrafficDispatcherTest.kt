@@ -17,20 +17,16 @@ import uk.co.origamibits.redbadger.robot.RobotHiveMind
 
 class MarsTrafficDispatcherTest {
 
-    private lateinit var dispatcher: MarsTrafficDispatcher
-
-    private val reader: EarthStationReader = EarthStationReader(WorldGridParser(), StartingPointParser())
-    private val hiveMind: RobotHiveMind = mock()
-
     @Before
     fun setUp() {
         Timber.plant(UnitTestTree())
-        dispatcher = MarsTrafficDispatcher(reader, hiveMind)
     }
 
     @Test
     fun `given reader fails, when dispatch, then fail`() {
+        val reader: EarthStationReader = mock()
         given(reader.read(any(), any())).willThrow(IllegalArgumentException())
+        val dispatcher = MarsTrafficDispatcher(reader, mock())
 
         assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy {
             dispatcher.dispatch("".byteInputStream())
@@ -39,7 +35,11 @@ class MarsTrafficDispatcherTest {
 
     @Test
     fun `given reader succeeds, when dispatch, then move all robots`() {
-
+        val robotHiveMind:RobotHiveMind = mock()
+        val dispatcher = MarsTrafficDispatcher(
+            reader = EarthStationReader(WorldGridParser(), StartingPointParser()),
+            robotHiveMind = robotHiveMind
+        )
         dispatcher.dispatch(
             """
             5 3
@@ -54,6 +54,6 @@ class MarsTrafficDispatcherTest {
         """.trimIndent().byteInputStream()
         )
 
-        verify(hiveMind, times(3)).moveRobot(any(), any(), any())
+        verify(robotHiveMind, times(3)).moveRobot(any(), any(), any())
     }
 }
