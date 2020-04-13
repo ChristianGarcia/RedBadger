@@ -21,6 +21,11 @@ class StartingPointParserTest {
     }
 
     @Test
+    fun `given entry with non-numeric coordinates, when read, then return null`() {
+        assertThat(parser.parse("a 1 E")).isNull()
+    }
+
+    @Test
     fun `given entry with negative x, when read, then return null`() {
         assertThat(parser.parse("-1 1 E")).isNull()
     }
