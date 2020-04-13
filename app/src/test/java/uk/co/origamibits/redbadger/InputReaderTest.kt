@@ -63,12 +63,24 @@ class InputReaderTest {
     fun `given no robot instructions, when read, then perform no operations`() {
         var robotCount = 0
 
-        reader.read("5 3".byteInputStream()) { robotCount++ }
+        reader.read("5 3".byteInputStream()) { _, _ -> robotCount++ }
+
+        assertThat(robotCount).isEqualTo(0)
+    }
+
+    @Test
+    fun `given robot entry with no instructions, when read, then perform no operations`() {
+        var robotCount = 0
+        val input = """
+    |5 3
+    |1 1 E
+    |""".trimMargin()
+        reader.read(input.byteInputStream()) { _, _ -> robotCount++ }
 
         assertThat(robotCount).isEqualTo(0)
     }
 
     companion object {
-        private val NO_OP: (String) -> Unit = {}
+        private val NO_OP: (String, String) -> Unit = { _, _ -> }
     }
 }

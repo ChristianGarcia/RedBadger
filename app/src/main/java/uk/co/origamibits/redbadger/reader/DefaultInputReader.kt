@@ -5,7 +5,7 @@ import java.io.InputStream
 
 class DefaultInputReader : InputReader {
 
-    override fun read(inputStream: InputStream, operation: (String) -> Unit): WorldGrid {
+    override fun read(inputStream: InputStream, operation: (String, String) -> Unit): WorldGrid {
         val worldLine = inputStream.reader().readLines().firstOrNull() ?: throw IllegalArgumentException()
         val (x, y) = try {
             worldLine.split(" ").let { it[0].toInt() to it[1].toInt() }

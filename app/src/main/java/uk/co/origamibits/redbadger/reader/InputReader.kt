@@ -5,6 +5,6 @@ import java.io.InputStream
 
 interface InputReader {
 
-    fun read(inputStream: InputStream, operation: (String) -> Unit): WorldGrid
+    fun read(inputStream: InputStream, operation: (String, String) -> Unit): WorldGrid
 
 }
