@@ -9,7 +9,7 @@ import uk.co.origamibits.redbadger.model.WorldGrid
 import uk.co.origamibits.redbadger.reader.DefaultInputReader
 import uk.co.origamibits.redbadger.reader.InputReader
 
-class InputReaderTest {
+class DefaultInputReaderTest {
 
     private lateinit var reader: InputReader
 
