@@ -15,6 +15,7 @@ import uk.co.origamibits.redbadger.reader.StartingPointParser
 import uk.co.origamibits.redbadger.reader.WorldGridParser
 import uk.co.origamibits.redbadger.robot.RobotHiveMind
 
+@ExperimentalStdlibApi
 class MarsTrafficDispatcherTest {
 
     private lateinit var dispatcher: MarsTrafficDispatcher
