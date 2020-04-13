@@ -10,6 +10,14 @@ class DefaultInputReader : InputReader {
 
 
     override fun read(inputStream: InputStream) {
+        val worldLine = inputStream.reader().readLines().firstOrNull() ?: throw IllegalArgumentException()
+        val (x, y) = try {
+            worldLine.split(" ").let { it[0].toInt() to it[1].toInt() }
+        } catch (e: IndexOutOfBoundsException) {
+            throw IllegalArgumentException("Expected grid world with format <x> <y>'")
+        } catch (e: NumberFormatException) {
+            throw IllegalArgumentException(e)
+        }
 
     }
 
