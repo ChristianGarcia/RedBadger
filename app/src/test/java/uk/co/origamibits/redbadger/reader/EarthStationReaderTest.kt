@@ -54,6 +54,7 @@ class EarthStationReaderTest {
     fun `given no robot instructions, when read, then perform no operations`() {
         var robotCount = 0
 
+        given(worldGridParser.parse(any())).willCallRealMethod()
         reader.read("5 3".byteInputStream()) { grid, _, _ ->
             robotCount++
             grid
@@ -65,6 +66,7 @@ class EarthStationReaderTest {
     @Test
     fun `given robot entry with invalid starting point, when read, then ignore robot`() {
 
+        given(worldGridParser.parse(any())).willCallRealMethod()
         given(startingPointParser.parse(any())).willReturn(null)
 
         var robotCount = 0
@@ -83,6 +85,7 @@ class EarthStationReaderTest {
 
     @Test
     fun `given robot entry with no instructions, when read, then perform no operations`() {
+        given(worldGridParser.parse(any())).willCallRealMethod()
         given(startingPointParser.parse(any())).willCallRealMethod()
 
         var robotCount = 0
