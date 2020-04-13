@@ -4,8 +4,8 @@ import uk.co.origamibits.redbadger.model.RobotLocation
 import uk.co.origamibits.redbadger.model.WorldGrid
 
 class RobotHiveMind {
-    fun moveRobot(grid: WorldGrid, start: RobotLocation, instructions: CharArray) {
-        TODO("Not yet implemented")
+    fun moveRobot(grid: WorldGrid, start: RobotLocation, instructions: CharArray): RobotLocation? {
+        return null
     }
 
 }
