@@ -1,6 +1,6 @@
 package uk.co.origamibits.redbadger.model
 
-data class StartingPoint(
+data class RobotLocation(
     val x: Int,
     val y: Int,
     val orientation: Orientation

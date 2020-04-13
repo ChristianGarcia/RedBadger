@@ -2,10 +2,10 @@ package uk.co.origamibits.redbadger.reader
 
 import timber.log.Timber
 import uk.co.origamibits.redbadger.model.Orientation
-import uk.co.origamibits.redbadger.model.StartingPoint
+import uk.co.origamibits.redbadger.model.RobotLocation
 
 class StartingPointParser {
-    fun parse(line: String): StartingPoint? {
+    fun parse(line: String): RobotLocation? {
         val split = line.split(" ")
         if (split.size != 3) {
             Timber.w("Invalid starting point. Missing values: %s", line)
@@ -22,10 +22,10 @@ class StartingPointParser {
             return null
         }
         return when (split[2]) {
-            "N" -> StartingPoint(x, y, Orientation.N)
-            "S" -> StartingPoint(x, y, Orientation.S)
-            "W" -> StartingPoint(x, y, Orientation.W)
-            "E" -> StartingPoint(x, y, Orientation.E)
+            "N" -> RobotLocation(x, y, Orientation.N)
+            "S" -> RobotLocation(x, y, Orientation.S)
+            "W" -> RobotLocation(x, y, Orientation.W)
+            "E" -> RobotLocation(x, y, Orientation.E)
             else -> null
         }
     }

@@ -6,7 +6,7 @@ import org.junit.Test
 import timber.log.Timber
 import uk.co.origamibits.redbadger.UnitTestTree
 import uk.co.origamibits.redbadger.model.Orientation
-import uk.co.origamibits.redbadger.model.StartingPoint
+import uk.co.origamibits.redbadger.model.RobotLocation
 
 class StartingPointParserTest {
 
@@ -41,7 +41,7 @@ class StartingPointParserTest {
     @Test
     fun `given entry with valid values, when read, then return null`() {
         assertThat(parser.parse("1 1 E")).isEqualTo(
-            StartingPoint(1, 1, Orientation.E)
+            RobotLocation(1, 1, Orientation.E)
         )
     }
 }

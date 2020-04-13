@@ -8,19 +8,19 @@ import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Before
 import org.junit.Test
 import uk.co.origamibits.redbadger.model.Orientation
-import uk.co.origamibits.redbadger.model.StartingPoint
+import uk.co.origamibits.redbadger.model.RobotLocation
 import uk.co.origamibits.redbadger.model.WorldGrid
 
-class DefaultInputReaderTest {
+class EarthStationReaderTest {
 
-    private lateinit var reader: InputReader
+    private lateinit var reader: EarthStationReader
 
     private val worldGridParser: WorldGridParser = mock()
     private val startingPointParser: StartingPointParser = mock()
 
     @Before
     fun setUp() {
-        reader = DefaultInputReader(worldGridParser, startingPointParser)
+        reader = EarthStationReader(worldGridParser, startingPointParser)
     }
 
     @Test
@@ -92,7 +92,7 @@ class DefaultInputReaderTest {
         given(worldGridParser.parse(any())).willCallRealMethod()
         given(startingPointParser.parse(any())).willCallRealMethod()
 
-        val operations = ArrayList<Triple<WorldGrid, StartingPoint, CharArray>>()
+        val operations = ArrayList<Triple<WorldGrid, RobotLocation, CharArray>>()
         val input = """
     |5 3
     |1 1 E
@@ -103,11 +103,11 @@ class DefaultInputReaderTest {
         assertThat(operations).hasSize(1)
         val (grid, start, instructions) = operations[0]
         assertThat(grid).isEqualTo(WorldGrid(5, 3))
-        assertThat(start).isEqualTo(StartingPoint(1, 1, Orientation.E))
+        assertThat(start).isEqualTo(RobotLocation(1, 1, Orientation.E))
         assertThat(instructions).isEqualTo(charArrayOf('R', 'F', 'R', 'F', 'R', 'F', 'R', 'F'))
     }
 
     companion object {
-        private val NO_OP: (WorldGrid, StartingPoint, CharArray) -> Unit = { _, _, _ -> }
+        private val NO_OP: (WorldGrid, RobotLocation, CharArray) -> Unit = { _, _, _ -> }
     }
 }
