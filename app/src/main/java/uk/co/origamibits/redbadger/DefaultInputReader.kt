@@ -18,7 +18,6 @@ class DefaultInputReader : InputReader {
         } catch (e: NumberFormatException) {
             throw IllegalArgumentException(e)
         }
-
     }
 
 }

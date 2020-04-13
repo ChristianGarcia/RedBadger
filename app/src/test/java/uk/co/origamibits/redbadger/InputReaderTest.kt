@@ -39,4 +39,11 @@ class InputReaderTest {
             }
     }
 
+    @Test
+    fun `given negative world grid values, when read then fail`() {
+        assertThatExceptionOfType(IllegalArgumentException::class.java)
+            .isThrownBy {
+                reader.read("-5 1".byteInputStream())
+
+            }    }
 }
