@@ -6,7 +6,8 @@ import uk.co.origamibits.redbadger.model.WorldGrid
 import java.io.InputStream
 
 class DefaultInputReader(
-    private val worldGridParser: WorldGridParser
+    private val worldGridParser: WorldGridParser,
+    private val startingPointParser: StartingPointParser
 ) : InputReader {
 
     override fun read(inputStream: InputStream, block: (WorldGrid, StartingPoint, String) -> Unit) {
@@ -19,28 +20,11 @@ class DefaultInputReader(
             lines
                 .chunked(2)
                 .filter { robotEntry -> robotEntry.size == 2 }
-                .map { parseStartingPoint(it[0]) to it[1] }
+                .map { startingPointParser.parse(it[0]) to it[1] }
                 .filter { (startingPoint, _) -> startingPoint != null }
                 .forEach { (start, operations) -> block(grid, start!!, operations) }
         }
 
-    }
-
-    private fun parseStartingPoint(line: String): StartingPoint? {
-        val split = line.split(" ")
-        if (split.size != 3) return null
-        val (x, y) = try {
-            split[0].toInt() to split[1].toInt()
-        } catch (e: NumberFormatException) {
-            throw IllegalArgumentException(e)
-        }
-        return when (split[2]) {
-            "N" -> StartingPoint(x, y, Orientation.N)
-            "S" -> StartingPoint(x, y, Orientation.S)
-            "W" -> StartingPoint(x, y, Orientation.W)
-            "E" -> StartingPoint(x, y, Orientation.E)
-            else -> null
-        }
     }
 
 }

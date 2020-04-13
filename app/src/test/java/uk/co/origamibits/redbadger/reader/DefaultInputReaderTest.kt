@@ -15,10 +15,11 @@ class DefaultInputReaderTest {
     private lateinit var reader: InputReader
 
     private val worldGridParser: WorldGridParser = mock()
+    private val startingPointParser: StartingPointParser = mock()
 
     @Before
     fun setUp() {
-        reader = DefaultInputReader(worldGridParser)
+        reader = DefaultInputReader(worldGridParser, startingPointParser)
     }
 
     @Test
@@ -55,12 +56,16 @@ class DefaultInputReaderTest {
     }
 
     @Test
-    fun `given robot entry with missing orientation, when read, then ignore robot`() {
+    fun `given robot entry with invalid starting point, when read, then ignore robot`() {
+
+        given(startingPointParser.parse(any())).willReturn(null)
+
         var robotCount = 0
         val input = """
     |5 3
     |1 1
     |RFRFRFRF""".trimMargin()
+
         reader.read(input.byteInputStream()) { _, _, _ -> robotCount++ }
 
         assertThat(robotCount).isEqualTo(0)
@@ -68,6 +73,8 @@ class DefaultInputReaderTest {
 
     @Test
     fun `given robot entry with no instructions, when read, then perform no operations`() {
+        given(startingPointParser.parse(any())).willCallRealMethod()
+
         var robotCount = 0
         val input = """
     |5 3
@@ -82,6 +89,7 @@ class DefaultInputReaderTest {
     fun `given robot entry with valid orientation and instructions, when read, then perform operations`() {
 
         given(worldGridParser.parse(any())).willCallRealMethod()
+        given(startingPointParser.parse(any())).willCallRealMethod()
 
         var robotCount = 0
         val input = """
