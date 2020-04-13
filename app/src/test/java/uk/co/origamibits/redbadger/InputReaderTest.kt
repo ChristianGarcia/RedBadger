@@ -23,11 +23,15 @@ class InputReaderTest {
     }
 
     @Test
-    fun `given world grid invalid input, when read, then fail`() {
+    fun `given world grid single value, when read, then fail`() {
         assertThatExceptionOfType(IllegalArgumentException::class.java)
             .isThrownBy {
                 reader.read("5".byteInputStream())
             }
+    }
+
+    @Test
+    fun `given world grid non-numeric values, when read, then fail`() {
 
         assertThatExceptionOfType(IllegalArgumentException::class.java)
             .isThrownBy {
