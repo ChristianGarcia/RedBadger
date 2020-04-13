@@ -1,5 +1,8 @@
 package uk.co.origamibits.redbadger
 
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Before
@@ -8,18 +11,22 @@ import uk.co.origamibits.redbadger.model.StartingPoint
 import uk.co.origamibits.redbadger.model.WorldGrid
 import uk.co.origamibits.redbadger.reader.DefaultInputReader
 import uk.co.origamibits.redbadger.reader.InputReader
+import uk.co.origamibits.redbadger.reader.WorldGridParser
 
 class DefaultInputReaderTest {
 
     private lateinit var reader: InputReader
 
+    private val worldGridParser: WorldGridParser = mock()
+
     @Before
     fun setUp() {
-        reader = DefaultInputReader()
+        reader = DefaultInputReader(worldGridParser)
     }
 
     @Test
-    fun `given no world grid available, when read, then fail`() {
+    fun `given parsing world grid fails, when read, then fail`() {
+        given(worldGridParser.parse(any())).willThrow(IllegalArgumentException())
         assertThatExceptionOfType(IllegalArgumentException::class.java)
             .isThrownBy {
                 reader.read("".byteInputStream(), NO_OP)
@@ -27,32 +34,9 @@ class DefaultInputReaderTest {
     }
 
     @Test
-    fun `given world grid single value, when read, then fail`() {
-        assertThatExceptionOfType(IllegalArgumentException::class.java)
-            .isThrownBy {
-                reader.read("5".byteInputStream(), NO_OP)
-            }
-    }
+    fun `given parsing world grid succeeds, when read then expect x-y values`() {
+        given(worldGridParser.parse(any())).willCallRealMethod()
 
-    @Test
-    fun `given world grid non-numeric values, when read, then fail`() {
-
-        assertThatExceptionOfType(IllegalArgumentException::class.java)
-            .isThrownBy {
-                reader.read("5 b".byteInputStream(), NO_OP)
-            }
-    }
-
-    @Test
-    fun `given negative world grid values, when read then fail`() {
-        assertThatExceptionOfType(IllegalArgumentException::class.java)
-            .isThrownBy {
-                reader.read("-5 1".byteInputStream(), NO_OP)
-            }
-    }
-
-    @Test
-    fun `given valid world grid values, when read then expect x-y values`() {
         reader.read("0 0".byteInputStream()) { grid, _, _ ->
             assertThat(grid.x).isEqualTo(0)
             assertThat(grid.y).isEqualTo(0)
@@ -99,6 +83,9 @@ class DefaultInputReaderTest {
 
     @Test
     fun `given robot entry with valid orientation and instructions, when read, then perform operations`() {
+
+        given(worldGridParser.parse(any())).willCallRealMethod()
+
         var robotCount = 0
         val input = """
     |5 3

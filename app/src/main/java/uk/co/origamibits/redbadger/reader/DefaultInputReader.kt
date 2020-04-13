@@ -5,13 +5,15 @@ import uk.co.origamibits.redbadger.model.StartingPoint
 import uk.co.origamibits.redbadger.model.WorldGrid
 import java.io.InputStream
 
-class DefaultInputReader : InputReader {
+class DefaultInputReader(
+    private val worldGridParser: WorldGridParser
+) : InputReader {
 
     override fun read(inputStream: InputStream, block: (WorldGrid, StartingPoint, String) -> Unit) {
         val reader = inputStream.reader().buffered()
 
         val worldLine = reader.readLine() ?: throw IllegalArgumentException("Expected grid world with format <x> <y>'")
-        val grid = parseWorldGrid(worldLine)
+        val grid = worldGridParser.parse(worldLine)
 
         reader.useLines { lines ->
             lines
@@ -41,15 +43,4 @@ class DefaultInputReader : InputReader {
         }
     }
 
-    private fun parseWorldGrid(worldLine: String): WorldGrid {
-        val (x, y) = try {
-            worldLine.split(" ").let { it[0].toInt() to it[1].toInt() }
-        } catch (e: IndexOutOfBoundsException) {
-            throw IllegalArgumentException("Expected grid world with format <x> <y>'")
-        } catch (e: NumberFormatException) {
-            throw IllegalArgumentException(e)
-        }
-        if (x < 0 || y < 0) throw IllegalArgumentException("Expected world grid with only positive numbers: $worldLine")
-        return WorldGrid(x, y)
-    }
 }
