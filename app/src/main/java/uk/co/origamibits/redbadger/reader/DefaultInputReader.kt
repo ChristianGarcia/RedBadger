@@ -8,17 +8,19 @@ import java.io.InputStream
 class DefaultInputReader : InputReader {
 
     override fun read(inputStream: InputStream, block: (WorldGrid, StartingPoint, String) -> Unit) {
-        val lines = inputStream.reader().readLines()
+        val reader = inputStream.reader().buffered()
 
-        val worldLine = lines.firstOrNull() ?: throw IllegalArgumentException("Expected grid world with format <x> <y>'")
+        val worldLine = reader.readLine() ?: throw IllegalArgumentException("Expected grid world with format <x> <y>'")
         val grid = parseWorldGrid(worldLine)
 
-        lines.subList(1, lines.size)
-            .chunked(2)
-            .filter { robotEntry -> robotEntry.size == 2 }
-            .map { parseStartingPoint(it[0]) to it[1] }
-            .filter { (startingPoint, _) -> startingPoint != null }
-            .forEach { (start, operations) -> block(grid, start!!, operations) }
+        reader.useLines { lines ->
+            lines
+                .chunked(2)
+                .filter { robotEntry -> robotEntry.size == 2 }
+                .map { parseStartingPoint(it[0]) to it[1] }
+                .filter { (startingPoint, _) -> startingPoint != null }
+                .forEach { (start, operations) -> block(grid, start!!, operations) }
+        }
 
     }
 
