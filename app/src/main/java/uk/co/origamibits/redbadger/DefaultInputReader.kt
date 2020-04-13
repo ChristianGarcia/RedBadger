@@ -18,6 +18,7 @@ class DefaultInputReader : InputReader {
         } catch (e: NumberFormatException) {
             throw IllegalArgumentException(e)
         }
+        if (x < 0 || y < 0) throw IllegalArgumentException("Expected world grid with only positive numbers: $worldLine ")
     }
 
 }
