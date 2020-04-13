@@ -35,17 +35,17 @@ class RobotHiveMind {
                 else -> lastKnownPosition
             }
             if (!grid.contains(newPosition.coords)) {
-                return RobotMoveResult.Lost(lastKnownPosition.coords)
+                return RobotMoveResult.Lost(lastKnownPosition)
             } else {
                 lastKnownPosition = newPosition
             }
         }
-        return RobotMoveResult.Moved(lastKnownPosition.coords)
+        return RobotMoveResult.Moved(lastKnownPosition)
     }
 
     sealed class RobotMoveResult {
-        data class Lost(val scentLocation: Pair<Int, Int>) : RobotMoveResult()
-        data class Moved(val location: Pair<Int, Int>) : RobotMoveResult()
+        data class Lost(val scentLocation: RobotLocation) : RobotMoveResult()
+        data class Moved(val location: RobotLocation) : RobotMoveResult()
     }
 
     private val RobotLocation.coords get() = x to y

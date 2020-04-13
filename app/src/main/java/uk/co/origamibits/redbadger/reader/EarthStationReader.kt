@@ -9,7 +9,8 @@ class EarthStationReader(
     private val startingPointParser: StartingPointParser
 ) {
 
-    fun read(inputStream: InputStream, block: (WorldGrid, RobotLocation, CharArray) -> Unit) {
+    @ExperimentalStdlibApi
+    fun read(inputStream: InputStream, block: (WorldGrid, RobotLocation, CharArray) -> WorldGrid) {
         val reader = inputStream.reader().buffered()
 
         val worldLine = reader.readLine() ?: throw IllegalArgumentException("Expected grid world with format <x> <y>'")
@@ -22,7 +23,12 @@ class EarthStationReader(
                 .filter { robotEntry -> robotEntry.size == 2 }
                 .map { startingPointParser.parse(it[0]) to it[1] }
                 .filter { (startingPoint, _) -> startingPoint != null }
-                .forEach { (start, instructions) -> block(grid, start!!, instructions.toCharArray()) }
+                .scan(grid) { currentGrid, robotEntry ->
+                    val (start, instructions) = robotEntry
+                    block(currentGrid, start!!, instructions.toCharArray())
+                }
+                .forEach { _ -> } //Subscribes to this sequence to start consuming it
+
         }
 
     }

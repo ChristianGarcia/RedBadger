@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
+import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Before
 import org.junit.Test
@@ -14,7 +15,9 @@ import uk.co.origamibits.redbadger.reader.EarthStationReader
 import uk.co.origamibits.redbadger.reader.StartingPointParser
 import uk.co.origamibits.redbadger.reader.WorldGridParser
 import uk.co.origamibits.redbadger.robot.RobotHiveMind
+import java.io.ByteArrayOutputStream
 
+@ExperimentalStdlibApi
 class MarsTrafficDispatcherTest {
 
     @Before
@@ -29,31 +32,64 @@ class MarsTrafficDispatcherTest {
         val dispatcher = MarsTrafficDispatcher(reader, mock())
 
         assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy {
-            dispatcher.dispatch("".byteInputStream())
+            dispatcher.dispatch("".byteInputStream(), ByteArrayOutputStream())
         }
     }
 
+    //Partial integration test
     @Test
     fun `given reader succeeds, when dispatch, then move all robots`() {
-        val robotHiveMind:RobotHiveMind = mock()
+        val robotHiveMind: RobotHiveMind = mock()
         val dispatcher = MarsTrafficDispatcher(
-            reader = EarthStationReader(WorldGridParser(), StartingPointParser()),
+            reader = EarthStationReader(WorldGridParser(), StartingPointParser()), //Integration
             robotHiveMind = robotHiveMind
         )
         dispatcher.dispatch(
-            """
-            5 3
-            1 1 E
-            RFRFRFRF
-            
-            3 2 N
-            FRRFLLFFRRFLL
-            
-            0 3 W
-            LLFFFLFLFL
-        """.trimIndent().byteInputStream()
+            inputStream = """
+                        5 3
+                        1 1 E
+                        RFRFRFRF
+                        
+                        3 2 N
+                        FRRFLLFFRRFLL
+                        
+                        0 3 W
+                        LLFFFLFLFL
+                    """.trimIndent().byteInputStream(),
+            outputStream = ByteArrayOutputStream()
         )
 
         verify(robotHiveMind, times(3)).moveRobot(any(), any(), any())
+    }
+
+    //Full integration test
+    @Test
+    fun `given reader succeeds, when dispatch, then lines written per robot`() {
+        val dispatcher = MarsTrafficDispatcher(
+            reader = EarthStationReader(WorldGridParser(), StartingPointParser()),
+            robotHiveMind = RobotHiveMind()
+        )
+        val outputStream = ByteArrayOutputStream()
+        dispatcher.dispatch(
+            inputStream = """
+                        5 3
+                        1 1 E
+                        RFRFRFRF
+                        
+                        3 2 N
+                        FRRFLLFFRRFLL
+                        
+                    """.trimIndent().byteInputStream(),
+            outputStream = outputStream
+        )
+
+        val string = String(outputStream.toByteArray())
+        assertThat(string).isEqualTo(
+            """
+                1 1 E
+                3 3 N LOST
+                
+            """.trimIndent()
+        )
     }
 }

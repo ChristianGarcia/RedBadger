@@ -11,6 +11,7 @@ import uk.co.origamibits.redbadger.model.Orientation
 import uk.co.origamibits.redbadger.model.RobotLocation
 import uk.co.origamibits.redbadger.model.WorldGrid
 
+@ExperimentalStdlibApi
 class EarthStationReaderTest {
 
     private lateinit var reader: EarthStationReader
@@ -39,10 +40,12 @@ class EarthStationReaderTest {
         reader.read("0 0".byteInputStream()) { grid, _, _ ->
             assertThat(grid.x).isEqualTo(0)
             assertThat(grid.y).isEqualTo(0)
+            grid
         }
         reader.read("5 3".byteInputStream()) { grid, _, _ ->
             assertThat(grid.x).isEqualTo(5)
             assertThat(grid.y).isEqualTo(3)
+            grid
         }
 
     }
@@ -51,7 +54,10 @@ class EarthStationReaderTest {
     fun `given no robot instructions, when read, then perform no operations`() {
         var robotCount = 0
 
-        reader.read("5 3".byteInputStream()) { _, _, _ -> robotCount++ }
+        reader.read("5 3".byteInputStream()) { grid, _, _ ->
+            robotCount++
+            grid
+        }
 
         assertThat(robotCount).isEqualTo(0)
     }
@@ -67,7 +73,10 @@ class EarthStationReaderTest {
     |1 1
     |RFRFRFRF""".trimMargin()
 
-        reader.read(input.byteInputStream()) { _, _, _ -> robotCount++ }
+        reader.read(input.byteInputStream()) { grid, _, _ ->
+            robotCount++
+            grid
+        }
 
         assertThat(robotCount).isEqualTo(0)
     }
@@ -81,7 +90,10 @@ class EarthStationReaderTest {
     |5 3
     |1 1 E
     |""".trimMargin()
-        reader.read(input.byteInputStream()) { _, _, _ -> robotCount++ }
+        reader.read(input.byteInputStream()) { grid, _, _ ->
+            robotCount++
+            grid
+        }
 
         assertThat(robotCount).isEqualTo(0)
     }
@@ -99,6 +111,7 @@ class EarthStationReaderTest {
     |RFRFRFRF""".trimMargin()
         reader.read(input.byteInputStream()) { grid, start, instructions ->
             operations.add(Triple(grid, start, instructions))
+            grid
         }
         assertThat(operations).hasSize(1)
         val (grid, start, instructions) = operations[0]
@@ -108,6 +121,6 @@ class EarthStationReaderTest {
     }
 
     companion object {
-        private val NO_OP: (WorldGrid, RobotLocation, CharArray) -> Unit = { _, _, _ -> }
+        private val NO_OP: (WorldGrid, RobotLocation, CharArray) -> WorldGrid = { grid, _, _ -> grid }
     }
 }

@@ -29,7 +29,7 @@ class RobotHiveMindTest {
             start = RobotLocation(1, 1, Orientation.N),
             instructions = "F".toCharArray()
         )
-        assertThat(lastPosition).isEqualTo(RobotHiveMind.RobotMoveResult.Lost(1 to 1))
+        assertThat(lastPosition).isEqualTo(RobotHiveMind.RobotMoveResult.Lost(RobotLocation(1, 1, Orientation.N)))
     }
 
     @Test
@@ -39,6 +39,6 @@ class RobotHiveMindTest {
             start = RobotLocation(1, 1, Orientation.N),
             instructions = "F".toCharArray()
         )
-        assertThat(lastPosition).isEqualTo(RobotHiveMind.RobotMoveResult.Moved(1 to 2))
+        assertThat(lastPosition).isEqualTo(RobotHiveMind.RobotMoveResult.Moved(RobotLocation(1, 2, Orientation.N)))
     }
 }
