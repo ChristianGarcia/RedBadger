@@ -7,7 +7,7 @@ class WorldGridParser {
         val (x, y) = try {
             worldLine.split(" ").let { it[0].toInt() to it[1].toInt() }
         } catch (e: IndexOutOfBoundsException) {
-            throw IllegalArgumentException("Expected grid world with format <x> <y>'")
+            throw IllegalArgumentException("Expected world grid with format <x> <y>'")
         } catch (e: NumberFormatException) {
             throw IllegalArgumentException(e)
         }
