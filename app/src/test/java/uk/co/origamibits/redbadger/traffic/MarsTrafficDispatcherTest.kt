@@ -16,7 +16,7 @@ class MarsTrafficDispatcherTest {
 
     @Before
     fun setUp() {
-        dispatcher = MarsTrafficDispatcher()
+        dispatcher = MarsTrafficDispatcher(reader)
     }
 
     @Test
@@ -24,7 +24,7 @@ class MarsTrafficDispatcherTest {
         given(reader.read(any(), any())).willThrow(IllegalArgumentException())
 
         assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy {
-            dispatcher.dispatch()
+            dispatcher.dispatch("".byteInputStream())
         }
     }
 }
