@@ -79,6 +79,8 @@ class MarsTrafficDispatcherTest {
                         3 2 N
                         FRRFLLFFRRFLL
                         
+                        0 3 W
+                        LLFFFLFLFL
                     """.trimIndent().byteInputStream(),
             outputStream = outputStream
         )
@@ -88,6 +90,7 @@ class MarsTrafficDispatcherTest {
             """
                 1 1 E
                 3 3 N LOST
+                2 3 S
                 
             """.trimIndent()
         )

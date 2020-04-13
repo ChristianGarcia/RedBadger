@@ -1,5 +1,6 @@
 package uk.co.origamibits.redbadger.robot
 
+import uk.co.origamibits.redbadger.model.Cell
 import uk.co.origamibits.redbadger.model.Orientation
 import uk.co.origamibits.redbadger.model.RobotLocation
 import uk.co.origamibits.redbadger.model.WorldGrid
@@ -34,10 +35,10 @@ class RobotHiveMind {
                 }
                 else -> lastKnownPosition
             }
-            if (!grid.contains(newPosition.coords)) {
-                return RobotMoveResult.Lost(lastKnownPosition)
-            } else {
+            if (grid.contains(newPosition.coords)) {
                 lastKnownPosition = newPosition
+            } else if (grid.grid[lastKnownPosition.x][lastKnownPosition.y] != Cell.ScentOfLostRobot) {
+                return RobotMoveResult.Lost(lastKnownPosition)
             }
         }
         return RobotMoveResult.Moved(lastKnownPosition)
