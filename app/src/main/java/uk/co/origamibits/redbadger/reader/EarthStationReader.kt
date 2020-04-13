@@ -17,11 +17,12 @@ class EarthStationReader(
 
         reader.useLines { lines ->
             lines
+                .filter { it.isNotBlank() }
                 .chunked(2)
                 .filter { robotEntry -> robotEntry.size == 2 }
                 .map { startingPointParser.parse(it[0]) to it[1] }
                 .filter { (startingPoint, _) -> startingPoint != null }
-                .onEach { (start, instructions) -> block(grid, start!!, instructions.toCharArray()) }
+                .forEach { (start, instructions) -> block(grid, start!!, instructions.toCharArray()) }
         }
 
     }
