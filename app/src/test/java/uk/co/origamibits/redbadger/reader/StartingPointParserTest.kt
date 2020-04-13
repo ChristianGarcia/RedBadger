@@ -3,6 +3,8 @@ package uk.co.origamibits.redbadger.reader
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
+import timber.log.Timber
+import uk.co.origamibits.redbadger.UnitTestTree
 import uk.co.origamibits.redbadger.model.Orientation
 import uk.co.origamibits.redbadger.model.StartingPoint
 
@@ -12,6 +14,7 @@ class StartingPointParserTest {
 
     @Before
     fun setUp() {
+        Timber.plant(UnitTestTree())
         parser = StartingPointParser()
     }
 
