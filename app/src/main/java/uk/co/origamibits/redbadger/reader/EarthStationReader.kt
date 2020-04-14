@@ -1,11 +1,9 @@
 package uk.co.origamibits.redbadger.reader
 
+import timber.log.Timber
 import uk.co.origamibits.redbadger.model.RobotLocation
 import uk.co.origamibits.redbadger.model.WorldGrid
 import java.io.InputStream
-import java.nio.ByteBuffer
-import java.nio.CharBuffer
-import java.nio.charset.CharsetDecoder
 
 class EarthStationReader(
     private val worldGridParser: WorldGridParser,
@@ -23,6 +21,11 @@ class EarthStationReader(
             lines
                 .filter { it.isNotBlank() }
                 .chunked(2)
+                .onEach { robotEntry ->
+                    if (robotEntry.size < 2) {
+                        Timber.w("Ignoring robot as no instructions provided: ${robotEntry[0]}")
+                    }
+                }
                 .filter { robotEntry -> robotEntry.size == 2 }
                 .map { startingPointParser.parse(it[0]) to it[1] }
                 .filter { (startingPoint, _) -> startingPoint != null }
