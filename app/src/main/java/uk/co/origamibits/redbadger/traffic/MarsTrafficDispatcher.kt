@@ -13,26 +13,26 @@ class MarsTrafficDispatcher(
 
     @ExperimentalStdlibApi
     fun dispatch(inputStream: InputStream, outputStream: OutputStream) {
-        val bufferedWriter = outputStream.bufferedWriter()
-        reader.read(inputStream) { grid, start, instructions ->
-            val gridCopy = grid.copy()
-            when (val result = robotHiveMind.moveRobot(grid, start, instructions)) {
-                is RobotHiveMind.RobotMoveResult.Lost -> {
-                    val (x, y, orientation) = result.scentLocation
-                    gridCopy.grid[x][y] = Cell.ScentOfLostRobot
-                    bufferedWriter.write("$x $y $orientation LOST")
-                    bufferedWriter.newLine()
-                }
-                is RobotHiveMind.RobotMoveResult.Moved -> {
-                    val (x, y, orientation) = result.location
-                    bufferedWriter.write("$x $y $orientation")
-                    bufferedWriter.newLine()
+        outputStream.bufferedWriter().use {
 
+            reader.read(inputStream) { grid, start, instructions ->
+                val gridCopy = grid.copy()
+                when (val result = robotHiveMind.moveRobot(grid, start, instructions)) {
+                    is RobotHiveMind.RobotMoveResult.Lost -> {
+                        val (x, y, orientation) = result.scentLocation
+                        gridCopy.grid[x][y] = Cell.ScentOfLostRobot
+                        it.write("$x $y $orientation LOST")
+                        it.newLine()
+                    }
+                    is RobotHiveMind.RobotMoveResult.Moved -> {
+                        val (x, y, orientation) = result.location
+                        it.write("$x $y $orientation")
+                        it.newLine()
+                    }
                 }
+                gridCopy
             }
-            gridCopy
         }
-        bufferedWriter.close()
     }
 
 
