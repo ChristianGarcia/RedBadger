@@ -15,7 +15,7 @@ Important notes:
 * Because the core logic uses plain Kotlin, this test can be executed either as:
   * An Android app with UI (by launching the app module)
   * A standalone class (by launching Main.kt)
-* DI Using Dagger-Android
+* DI using Dagger-Android
 
 ## Android app
 Uses architecture components to interact between UI and business logic:
