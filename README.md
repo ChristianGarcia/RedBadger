@@ -1,8 +1,5 @@
 # RedBadger
 
-This solution Coroutines (with Flow) and Live Data to provide a Two-way data binding
-
-Important notes:
 * This solution showcases a TDD approach to implementing business logic, as seen in the commit history.
 * Especial attention has been put to handle edge cases:
   * Incomplete input: Robot ignored
