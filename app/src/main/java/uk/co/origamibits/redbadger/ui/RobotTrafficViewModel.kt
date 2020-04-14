@@ -1,14 +1,12 @@
 package uk.co.origamibits.redbadger.ui
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import uk.co.origamibits.redbadger.business.AsStringMoveRobotsUseCase
 import java.util.concurrent.atomic.AtomicReference
 
+@ExperimentalCoroutinesApi
 @ExperimentalStdlibApi
 class RobotTrafficViewModel(private val useCase: AsStringMoveRobotsUseCase) : ViewModel() {
 
