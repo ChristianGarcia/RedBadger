@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RedBadger</string>
+    <string name="input_hint">Write your input here</string>
+    <string name="submit_text">Move robots</string>
 </resources>
