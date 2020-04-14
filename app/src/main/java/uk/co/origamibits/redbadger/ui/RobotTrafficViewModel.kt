@@ -27,7 +27,7 @@ class RobotTrafficViewModel(private val useCase: AsStringMoveRobotsUseCase) : Vi
         emit(
             when (val result = useCase.execute(input)) {
                 is AsStringMoveRobotsUseCase.Result.Success -> result.data
-                is AsStringMoveRobotsUseCase.Result.Error -> "Error"
+                is AsStringMoveRobotsUseCase.Result.Error -> "Error: ${result.exception.localizedMessage}"
             }
         )
     }
