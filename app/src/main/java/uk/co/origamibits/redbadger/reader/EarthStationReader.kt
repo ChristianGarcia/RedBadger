@@ -4,8 +4,11 @@ import timber.log.Timber
 import uk.co.origamibits.redbadger.model.RobotLocation
 import uk.co.origamibits.redbadger.model.WorldGrid
 import java.io.InputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class EarthStationReader(
+@Singleton
+class EarthStationReader @Inject constructor(
     private val worldGridParser: WorldGridParser,
     private val startingPointParser: StartingPointParser
 ) {

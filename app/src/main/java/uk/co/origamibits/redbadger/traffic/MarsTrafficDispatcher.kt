@@ -5,8 +5,11 @@ import uk.co.origamibits.redbadger.reader.EarthStationReader
 import uk.co.origamibits.redbadger.robot.RobotHiveMind
 import java.io.InputStream
 import java.io.OutputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MarsTrafficDispatcher(
+@Singleton
+class MarsTrafficDispatcher @Inject constructor(
     private val reader: EarthStationReader,
     private val robotHiveMind: RobotHiveMind
 ) {

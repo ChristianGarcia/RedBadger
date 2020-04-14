@@ -1,8 +1,11 @@
 package uk.co.origamibits.redbadger.reader
 
 import uk.co.origamibits.redbadger.model.WorldGrid
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class WorldGridParser {
+@Singleton
+class WorldGridParser @Inject constructor() {
     fun parse(worldLine: String): WorldGrid {
         val (x, y) = try {
             worldLine.split(" ").let { it[0].toInt() to it[1].toInt() }

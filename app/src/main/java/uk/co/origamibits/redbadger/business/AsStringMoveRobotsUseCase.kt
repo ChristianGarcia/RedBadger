@@ -4,8 +4,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import uk.co.origamibits.redbadger.traffic.MarsTrafficDispatcher
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
-class AsStringMoveRobotsUseCase(
+class AsStringMoveRobotsUseCase @Inject constructor(
     private val marsTrafficDispatcher: MarsTrafficDispatcher
 ) {
 

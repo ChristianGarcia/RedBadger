@@ -4,8 +4,11 @@ import uk.co.origamibits.redbadger.model.Cell
 import uk.co.origamibits.redbadger.model.Orientation
 import uk.co.origamibits.redbadger.model.RobotLocation
 import uk.co.origamibits.redbadger.model.WorldGrid
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RobotHiveMind {
+@Singleton
+class RobotHiveMind @Inject constructor() {
 
     fun moveRobot(grid: WorldGrid, start: RobotLocation, instructions: CharArray): RobotMoveResult? {
         if (!grid.contains(start.coords)) {

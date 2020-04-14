@@ -5,10 +5,13 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import uk.co.origamibits.redbadger.business.AsStringMoveRobotsUseCase
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @ExperimentalStdlibApi
-class RobotTrafficViewModel(private val useCase: AsStringMoveRobotsUseCase) : ViewModel() {
+class RobotTrafficViewModel @Inject constructor(
+    private val useCase: AsStringMoveRobotsUseCase
+) : ViewModel() {
 
     private val submitClicks = MutableLiveData<Unit>()
     fun onSubmit() {

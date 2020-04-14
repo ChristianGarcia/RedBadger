@@ -3,8 +3,11 @@ package uk.co.origamibits.redbadger.reader
 import timber.log.Timber
 import uk.co.origamibits.redbadger.model.Orientation
 import uk.co.origamibits.redbadger.model.RobotLocation
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class StartingPointParser {
+@Singleton
+class StartingPointParser @Inject constructor() {
     fun parse(line: String): RobotLocation? {
         val split = line.split(" ")
         if (split.size != 3) {
